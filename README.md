@@ -1,0 +1,4 @@
+waggle
+======
+
+opensource competition platform
