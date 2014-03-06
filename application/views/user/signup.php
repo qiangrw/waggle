@@ -1,3 +1,4 @@
+<legend>SignUp</legend>
 <div class="row">
 <form class="form-horizontal" role="form" method="post" action="<?= site_url('user/submit_signup') ?>">
   <div class="form-group">

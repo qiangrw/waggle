@@ -46,6 +46,7 @@
 <ul class="nav navbar-nav navbar-right">
 <?php if($this->session->userdata('sid')): ?>
 <li><a href="#"><?= $this->session->userdata('sid') ?></a></li>
+<li><a href="<?= site_url('user/logout') ?>">Logout</a></li>
 <?php else: ?>
 <li><a href="<?= site_url('user/login') ?>">Login</a></li>
 <li><a href="<?= site_url('user/signup') ?>">Signup</a></li>

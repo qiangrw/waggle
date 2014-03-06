@@ -1,5 +1,5 @@
 <div class="row">
-<legend>请先登陆</legend>
+<legend>Please Login</legend>
 <form class="form-horizontal" role="form" method="post" action="<?= site_url('user/submit_login') ?>">
 <input type="hidden" name="url" value="<?= $url ?>" />
   <div class="form-group">

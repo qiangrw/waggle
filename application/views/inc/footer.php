@@ -1,3 +1,9 @@
+<footer>
+<hr />
+<center>
+Copyright - WebKDD 2014
+</center>
+</footer>
 </div> <!-- /container -->
 
 
