@@ -72,7 +72,7 @@ class User_model extends CI_Model {
 	 function check_user_password($sid,$password) 
 	 {
 	 	$this->db->flush_cache();
-		$data = array('sid' => $sid,'password'=>$password,'status' => 2);
+		$data = array('sid' => $sid,'password'=>$password);
 	 	$sel_query = $this->db->get_where('wa_user',$data);
 		if ($sel_query->num_rows() > 0) {
             $row = $sel_query->row();
@@ -121,6 +121,18 @@ class User_model extends CI_Model {
             $output .= $chars[mt_rand(0, $charsLen)]; 
         }
         return $output;
+    }
+
+
+    /**
+     * send password to user's mail
+     */
+    function send_password($sid, $password)
+    {
+        $email = $sid . "@pku.edu.cn";
+        $subject = "Waggle密码";
+        $message = "您的密码为 $password";
+        $this->send_mail($email, $subject, $message);
     }
 
 

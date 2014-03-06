@@ -12,6 +12,29 @@ class commit_model extends CI_Model {
     {
         parent::__construct();
     }
+
+    function compute_score($cid, $file_content)
+    {
+        
+        if($cid == 1) {
+          return $this->compute_fscore($file_content);
+        }
+
+        if($cid == 2) {
+          return $this->compute_map($file_content);
+        }
+        return NULL;
+    }
+
+    function compute_fscore($file_content) 
+    {
+        return NULL;
+    }
+    
+    function compute_map($file_content) 
+    {
+        return NULL;
+    }
  
 	/**
 	 * commit::insert()

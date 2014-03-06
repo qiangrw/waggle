@@ -13,7 +13,7 @@
 				
 		function generate_vcode()
 		{
-			ob_clean();		// delete extra spaces. 
+			@ob_clean();		// delete extra spaces. 
 			$checkcode = $this->_make_rand(4);
 			$this->session->set_userdata('vcode',$checkcode);
 			$this->_get_auth_image($checkcode);

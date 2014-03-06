@@ -35,6 +35,7 @@ class Counter_model extends CI_Model {
 	 */
 	function update($id, $data)
     {
+        $data['update_time'] = time();
         $this->db->flush_cache();
         $this->db->where('id', $id);
 		$this->db->update('wa_counter', $data);
@@ -52,8 +53,22 @@ class Counter_model extends CI_Model {
         $this->db->where('id', $id);
         $query = $this->db->get_where('wa_counter');
         return $query->row();
-	}          
-         
+    }
+
+    /**
+     * get counter's info by cid and sid
+     * @param int cid
+     * @param int sid
+     * @return mixed $info
+     */
+    function get_by_cid($cid, $sid)
+    {
+        $this->db->flush_cache();
+        $this->db->where('sid', $sid);
+        $this->db->where('cid', $cid);
+        $query = $this->db->get_where('wa_counter');
+        return $query->row();
+    }      
 }
 /* End of file counter_model.php */
 /* Location: ./application/model/counter_model.php */

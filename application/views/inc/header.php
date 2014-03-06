@@ -41,14 +41,28 @@
 </div>
 <div class="navbar-collapse collapse">
 <ul class="nav navbar-nav">
-<li class="active"><a href="#">Home</a></li>
+<li><a href="<?= site_url('competition/index') ?>">Competition</a></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
+<?php if($this->session->userdata('sid')): ?>
+<li><a href="#"><?= $this->session->userdata('sid') ?></a></li>
+<?php else: ?>
 <li><a href="<?= site_url('user/login') ?>">Login</a></li>
 <li><a href="<?= site_url('user/signup') ?>">Signup</a></li>
+<?php endif; ?>
 </ul>
 </div><!--/.nav-collapse -->
 </div>
 </div>
 
 <div class="container">      
+<?php if(isset($flash_message)): ?>
+<div class="row">
+<div class="col-md-12">
+<div class="alert alert-info">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<?= $flash_message ?>
+</div>
+</div>
+</div>
+<?php endif; ?>
