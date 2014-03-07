@@ -1,7 +1,8 @@
 <div class="row">
 <legend>Please Login</legend>
 <form class="form-horizontal" role="form" method="post" action="<?= site_url('user/submit_login') ?>">
-<input type="hidden" name="url" value="<?= $url ?>" />
+  <?php if(!isset($url)) $url='competition'; ?>
+  <input type="hidden" name="url" value="<?= $url ?>" />
   <div class="form-group">
     <label for="inputSid3" class="col-sm-2 control-label">Student ID</label>
     <div class="col-sm-10">
@@ -18,6 +19,8 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
+      <a href="mailto:qiangrw@gmail.com">Forget Password?</a>
+      <br /> <br />
       <button type="submit" class="btn btn-lg btn-primary">Login</button>
     </div>
   </div>

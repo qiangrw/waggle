@@ -33,7 +33,7 @@ class User_model extends CI_Model {
 	 * @return string code
 	 */ 
 	function generate_password(){
-		 $code = $this->get_random_word(6,12);
+		 $code = $this->get_random_word(4,5);
 		 return $code;
 	}
 
@@ -130,8 +130,8 @@ class User_model extends CI_Model {
     function send_password($sid, $password)
     {
         $email = $sid . "@pku.edu.cn";
-        $subject = "Waggle密码";
-        $message = "您的密码为 $password";
+        $subject = "Waggle Password";
+        $message = "Your Paswsword is: $password";
         $this->send_mail($email, $subject, $message);
     }
 
@@ -145,11 +145,11 @@ class User_model extends CI_Model {
     function send_mail($email,$subject,$message)
     {
         $this->load->library('email');
-        $this->email->from('qiangrw@xxx.com', '强闰伟');
+        $this->email->from('waggle_pku@126.com', '强闰伟');
         $this->email->to($email);
         $this->email->subject($subject);
         $this->email->message($message); 
-        $this->email->send();
+        return $this->email->send();
     }
 }
 /* End of file user_model.php */
