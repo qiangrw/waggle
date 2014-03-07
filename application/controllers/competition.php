@@ -17,7 +17,7 @@ class Competition extends CI_Controller {
     // Page: competition list
     function index()
     {
-        $data['title'] = '竞赛列表';
+        $data['title'] = 'Competition List';
         $data['competitions'] = $this->Competition_model->gets();
         @ob_clean();
         $this->load->view('inc/header',$data);
@@ -29,7 +29,7 @@ class Competition extends CI_Controller {
     // Page: Rank list
     function rank($cid)
     {
-        $data['title'] = '竞赛列表';
+        $data['title'] = 'Rank';
         $data['competition'] = $this->Competition_model->get($cid);
         if(!$data['competition']) show_404();
         $data['commits'] = $this->Commit_model->get_rank($cid, 100);

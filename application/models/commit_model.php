@@ -13,9 +13,10 @@ class commit_model extends CI_Model {
         parent::__construct();
     }
 
-    // Compute F_value
     function compute_fvalue($file_content, $ans_content)
     {
+        // Compute F_value
+		
 		//get official answer
 		$answer = preg_split("/[\r]?\n/",$ans_content);
 		$pool = array();
@@ -45,6 +46,14 @@ class commit_model extends CI_Model {
 				continue;
 			}
 			$f_ans = explode("\t",$f);
+			if(sizeof($f_ans)!=2)
+			{
+				return NULL;
+			}
+			if($f_ans[1] != 0 && $f_ans[1] != 1)
+			{
+				return NULL;
+			}
 			if($f_ans[1] == "1")
 			{
 				$f_len = $f_len + 1;
@@ -59,13 +68,14 @@ class commit_model extends CI_Model {
 		$p = $and/$f_len;
 		$r = $and/$a_len;
 		
-		$f = 1.0/($alpha/$p+(1-$alpha)/$r);
+		$f = 1/($alpha/$p+(1-$alpha)/$r);
 		return $f;
     }
 
-    // Compute MAP
     function compute_score($file_content, $ans_content)
     {
+        // Compute MAP
+		
 		//get official answer
 		$answer = preg_split("/[\r]?\n/",$ans_content);
 		$answer_pool = array();
@@ -89,8 +99,7 @@ class commit_model extends CI_Model {
 			$recall[$i] = 0;
 			$rank[$i] = 0;
 			$score[$i] = 0.0;
-        }
-
+		}
 		$file = preg_split("/[\r]?\n/",$file_content);
 		foreach($file as $f)
 		{
@@ -99,6 +108,10 @@ class commit_model extends CI_Model {
 				continue;
 			}
 			$f_ans = explode(" ",$f);
+			if(sizeof($f_ans)!=4)
+			{
+				return NULL;
+			}
 			$qid = intval(substr($f_ans[0],$f_ans[0][2]=="0"?3:2));
 			$tid = $f_ans[1];
 			$rank[$qid] = $rank[$qid] + 1;
@@ -106,12 +119,11 @@ class commit_model extends CI_Model {
 			{
 				if(in_array($tid,$answer_pool[$qid]))
 				{
-					$recall[$qid] = $recall[$qid] + 1.0;
-					$score[$qid] = $score[$qid] + $recall[$qid]/($rank[$qid]*1.0);
+					$recall[$qid] = $recall[$qid] + 1;
+					$score[$qid] = $score[$qid] + $recall[$qid]/$rank[$qid];
 				}
 			}
-        }
-
+		}
 		$mean = 0;
 		$qid_num = 0;
 		for($i=51;$i<=110;$i=$i+1)
@@ -120,10 +132,10 @@ class commit_model extends CI_Model {
 			if(sizeof($answer_pool[$i])!=0)
 			{
 				$mean = $mean + $score[$i]/(sizeof($answer_pool[$i]));
-				$qid_num = $qid_num + 1.0;
+				$qid_num = $qid_num + 1;
 			}
 		}
-        return $mean/59.0;
+        return $mean/$qid_num;
     }
 
 	/**
@@ -165,12 +177,12 @@ class commit_model extends CI_Model {
         $this->db->where('id', $id);
         $query = $this->db->get_where('wa_commit');
         return $query->row();
-    }          
+    }
 
     /**
      * Get rank list
      */
-    function get_rank($cid, $limit)  
+    function get_rank($cid, $limit)
     {
 
         $this->db->flush_cache();
@@ -179,9 +191,8 @@ class commit_model extends CI_Model {
         $this->db->limit($limit);
         $query = $this->db->get('wa_commit');
         return $query->result();
-    }
+    }    
 
-         
 }
 /* End of file commit_model.php */
 /* Location: ./application/model/commit_model.php */
