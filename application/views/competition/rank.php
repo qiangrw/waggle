@@ -9,9 +9,10 @@
         <td>Score</td>
         <td>Time</td>
     </tr>
+    <?php $i = 1; ?>
     <?php foreach($commits as $commit): ?>
     <tr>
-        <td><?= $commit->id ?></td>
+        <td><?= $i++ ?></td>
         <td><?= $commit->sid ?></td>
         <td><?= $commit->runtag ?></td>
         <td><?= $commit->score ?></td>

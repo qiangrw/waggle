@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="col-sm-2 control-label">vcode</label>
+    <label class="col-sm-2 control-label">Vcode</label>
     <div class="col-sm-5">
       <input name="vcode" type="vcode" class="form-control" value='<?= set_value('vcode') ?>' />
       <p class="help-block text-danger"><?php echo form_error('vcode'); ?></p>

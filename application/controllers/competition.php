@@ -26,7 +26,22 @@ class Competition extends CI_Controller {
 
     }
 
-    function commit($cid)
+    // Page: Rank list
+    function rank($cid)
+    {
+        $data['title'] = '竞赛列表';
+        $data['competition'] = $this->Competition_model->get($cid);
+        if(!$data['competition']) show_404();
+        $data['commits'] = $this->Commit_model->get_rank($cid, 100);
+        @ob_clean();
+        $this->load->view('inc/header',$data);
+        $this->load->view('competition/rank');
+        $this->load->view('inc/duoshuo');
+        $this->load->view('inc/footer');
+    }
+
+    // Page: Commit a file
+    function commit($cid=0)
     {
         if($this->User_model->check_user_login() <= 0){ 
             redirect("user/login?url=competition/commit/$cid",'refresh');
@@ -62,7 +77,7 @@ class Competition extends CI_Controller {
 
 
     // Interface: submit commit
-    function submit_commit($cid)
+    function submit_commit($cid=0)
     {
         if($this->User_model->check_user_login() <= 0){ 
             redirect("user/login?url=competition/commit/$cid",'refresh');
@@ -91,22 +106,19 @@ class Competition extends CI_Controller {
                 'field'   => 'message',
                 'label'   => 'Message',
                 'rules'   => 'max_length[40]|xss_clean'
-            ),   
-            array(
-                'field'   => 'vcode',
-                'label'   => 'Vcode',
-                'rules'   => 'required|alpha_numeric|xss_clean'
-            )
+            )   
         );
         $this->form_validation->set_rules($config);
         $data = array();
         if ($this->form_validation->run() == FALSE) {
+            echo validation_errors();
+            return;
             $this->commit($cid);
         } else {
             $file_name = $sid.'_'.$cid.'_'.time().".txt";
             $config['upload_path'] = "uploads/commit/$cid";
             $config['allowed_types'] = 'txt|res';
-            $config['max_size'] = '10000';
+            $config['max_size'] = '100000000';
             $config['file_name'] = $file_name;
             $this->load->library('upload', $config);
 
@@ -120,31 +132,40 @@ class Competition extends CI_Controller {
                 // compute score of the file
                 $this->load->helper('file');
                 $file_content = read_file($config['upload_path']."/".$file_name);
-                $score = $this->Commit_model->compute_score($cid, $file_content);
+				$ans_content = read_file($competition->answer_file);
+                
+                if($cid == 1) {
+                    $score = $this->Commit_model->compute_fvalue($file_content, $ans_content);
+				}
+                if($cid == 2)  {
+                    $score = $this->Commit_model->compute_score($file_content, $ans_content);
+				}
+
                 if($score != NULL) {
                     $commit_array = array(
                         'sid' => $sid,
                         'cid' => $cid,
                         'file_name' => $file_name,
                         'runtag' => $this->input->get_post('runtag'),
-                        'message' => $this->input->get_post('message')
+                        'message' => $this->input->get_post('message'),
+                        'score' => $score
                     );
                     $this->Commit_model->insert($commit_array);
                     // update counter 
-                    //$counter_update = array('count' => $counter->count -1);
-                    //$this->Counter_model->update($counter->id, $counter_update);
+                    $counter_update = array('count' => $counter->count -1);
+                    $this->Counter_model->update($counter->id, $counter_update);
 
-                    $data['title'] = '提交成功';
-                    $data['note'] = '提交成功';
+                    $data['title'] = 'Commit Succ';
+                    $data['note'] = 'Commit Succ';
+                    redirect('competition/rank/'.$cid, 'refresh');
                 } else {
-                    $data['title'] = '计算分数失败';
-                    $data['note'] = '计算得分失败，请确保结果文件格式正确.';
+                    $data['title'] = 'Compute Score Error';
+                    $data['note'] = 'Please confirm that your file format is right.';
                 }
             }
             $this->load->view('inc/header',$data);
             $this->load->view('inc/note');
             $this->load->view('inc/footer');
-
         }
     }
 
