@@ -115,7 +115,8 @@ class Competition extends CI_Controller {
             return;
             $this->commit($cid);
         } else {
-            $file_name = $sid.'_'.$cid.'_'.time().".txt";
+
+            $file_name = $sid.'_'.$cid.'_'.time()."_".$this->User_model->generate_password().".txt";
             $config['upload_path'] = "uploads/commit/$cid";
             $config['allowed_types'] = 'txt|res';
             $config['max_size'] = '100000000';
