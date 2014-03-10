@@ -63,7 +63,10 @@ class commit_model extends CI_Model {
 				}
 			}
 		}
-		
+		if($and==0||$f_len==0||$a_len==0)
+		{
+			return 0;
+		}	
 		$alpha = 0.3;
 		$p = $and/$f_len;
 		$r = $and/$a_len;
