@@ -32,7 +32,7 @@ class Competition extends CI_Controller {
         $data['title'] = 'Rank';
         $data['competition'] = $this->Competition_model->get($cid);
         if(!$data['competition']) show_404();
-        $data['commits'] = $this->Commit_model->get_rank($cid, 100);
+        $data['commits'] = $this->Commit_model->get_rank($cid, 200);
         @ob_clean();
         $this->load->view('inc/header',$data);
         $this->load->view('competition/rank');
@@ -119,7 +119,7 @@ class Competition extends CI_Controller {
             $file_name = $sid.'_'.$cid.'_'.time()."_".$this->User_model->generate_password().".txt";
             $config['upload_path'] = "uploads/commit/$cid";
             $config['allowed_types'] = 'txt|res';
-            $config['max_size'] = '100000000';
+            $config['max_size'] = '200000000';
             $config['file_name'] = $file_name;
             $this->load->library('upload', $config);
 
